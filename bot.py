@@ -411,6 +411,47 @@ async def wikihelp_command(interaction: discord.Interaction):
     
     await interaction.response.send_message(embed=embed)
 
+@bot.tree.command(name="tiempo_restante", description="Muestra el tiempo restante hasta el lanzamiento de Hytale")
+async def tiempo_restante_command(interaction: discord.Interaction):
+    from datetime import datetime, timezone, timedelta
+    
+    # Fecha de lanzamiento: 13 de enero 2026, 17:00 CET (UTC+1)
+    cet = timezone(timedelta(hours=1))
+    launch_date = datetime(2026, 1, 13, 17, 0, 0, tzinfo=cet)
+    
+    now = datetime.now(cet)
+    remaining = launch_date - now
+    
+    if remaining.total_seconds() <= 0:
+        embed = discord.Embed(
+            title="🚀 ¡HYTALE YA ESTÁ DISPONIBLE!",
+            description="El Early Access ha comenzado. ¡A jugar!",
+            color=0x00FF00,
+            url="https://hytale.com"
+        )
+    else:
+        days = remaining.days
+        hours, remainder = divmod(remaining.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        
+        embed = discord.Embed(
+            title="⏳ Tiempo restante para Hytale Early Access",
+            color=0x00A8E8
+        )
+        
+        embed.add_field(name="📅 Días", value=f"**{days}**", inline=True)
+        embed.add_field(name="🕐 Horas", value=f"**{hours}**", inline=True)
+        embed.add_field(name="⏱️ Minutos", value=f"**{minutes}**", inline=True)
+        
+        embed.add_field(
+            name="📆 Fecha de lanzamiento",
+            value="13 de Enero de 2026 a las 17:00 CET",
+            inline=False
+        )
+        
+        embed.set_footer(text="hytale.com")
+    
+    await interaction.response.send_message(embed=embed)
 
 # ============== MAIN ==============
 
