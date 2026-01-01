@@ -9,7 +9,11 @@ from discord.ext import commands
 import aiohttp
 from typing import Optional
 from rapidfuzz import fuzz, process
-from config import TOKEN, WIKI_BASE_URL, WIKI_API_URL
+import os
+
+TOKEN = os.environ.get("DISCORD_TOKEN")
+WIKI_BASE_URL = "https://hytalewiki.org"
+WIKI_API_URL = "https://hytalewiki.org/api.php"
 
 
 class WikiBot(commands.Bot):
